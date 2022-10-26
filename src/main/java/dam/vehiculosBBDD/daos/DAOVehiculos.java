@@ -9,6 +9,8 @@ import dam.vehiculosBBDD.clases.Vehiculo;
 import dam.vehiculosBBDD.interfaces.IDAOVehiculos;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,6 +45,7 @@ public class DAOVehiculos implements IDAOVehiculos {
         for (int i = 0; i < lstVehiculos.size(); i++) {
             ConexionBD.eliminarVehiculo(lstVehiculos.get(i));
         }
+        this.falsaBD = ConexionBD.getVehiculos();
         
         return 0;
     }

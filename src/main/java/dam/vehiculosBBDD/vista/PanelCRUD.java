@@ -24,6 +24,7 @@ public class PanelCRUD extends javax.swing.JPanel {
     private Vehiculo vehiculoAEditar;
     /**
      * Creates new form PanelCRUD
+     * @param miVentana
      */
     public PanelCRUD(VentanaVehiculo miVentana) {
         initComponents();
@@ -190,6 +191,8 @@ public class PanelCRUD extends javax.swing.JPanel {
                 cargarTabla(tablaVehiculos);
             }
         }
+        
+        this.updateUI();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
@@ -212,6 +215,8 @@ public class PanelCRUD extends javax.swing.JPanel {
             gestion.eliminarVehiculos(vehiculos);
             cargarTabla(tablaVehiculos);
         }
+        
+        this.updateUI();
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnLeerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeerActionPerformed

@@ -56,16 +56,16 @@ public class ConexionBD {
             System.out.println("Error SQL: " + ex.toString());
         } catch (SQLException ex) {
             System.out.println("Error SQL: " + ex.toString());
-        }
-        
-        cerrarSesion();
+        } finally {
+            cerrarSesion();
+        }        
     }
     
     public static void eliminarVehiculo(Vehiculo vehiculo) { 
         enlace();
         
         try {
-            String sql = "DELETE FROM vehiculo WHERE MATRICULA = '?';";
+            String sql = "DELETE FROM vehiculo WHERE MATRICULA = ?;";
             stmt = conn.prepareStatement(sql);
             
             stmt.setString(1, vehiculo.getMatricula());
@@ -74,10 +74,10 @@ public class ConexionBD {
             
             stmt.execute();
         } catch (SQLException ex) {
-            System.out.println("Error SQL: " + ex.toString());
+            System.out.println("Error SQL por?: " + ex.toString());
+        } finally {
+            cerrarSesion();
         }
-        
-        cerrarSesion();
     }
     
     public static List<Vehiculo> getVehiculos() { 
@@ -102,9 +102,9 @@ public class ConexionBD {
             }
         } catch (SQLException ex) {
             System.out.println("Error SQL: " + ex.toString());
+        } finally {
+            cerrarSesion();
         }
-        
-        cerrarSesion();
         
         return listaVehiculos;
     }
@@ -130,9 +130,9 @@ public class ConexionBD {
             } 
         } catch (SQLException ex) {
             System.out.println("Error SQL: " + ex.getMessage());
+        } finally {
+            cerrarSesion();
         }
-        
-        cerrarSesion();
         
         return vehiculo;
     }
@@ -141,7 +141,7 @@ public class ConexionBD {
         enlace();
         
         try {
-            String sql = "UPDATE vehiculo SET MARCA = '?', MODELO = '?', MATRICULA = '?' WHERE MATRICULA = '?';";
+            String sql = "UPDATE vehiculo SET MARCA = ?, MODELO = ?, MATRICULA = ? WHERE MATRICULA = ?;";
             stmt = conn.prepareStatement(sql);
             
             stmt.setString(1, marca);
@@ -156,9 +156,9 @@ public class ConexionBD {
             System.out.println("Error SQL: " + ex.toString());
         } catch (SQLException ex) {
             System.out.println("Error SQL: " + ex.toString());
+        } finally {
+            cerrarSesion();
         }
-        
-        cerrarSesion();
     }
     
     private static void cerrarSesion() {
