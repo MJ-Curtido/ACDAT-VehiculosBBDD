@@ -4,6 +4,7 @@
  */
 package dam.vehiculosBBDD.bbdd;
 
+import dam.vehiculosBBDD.clases.Vehiculo;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class ConexionBD {
             conn = DriverManager.getConnection(url, login, password);
             System.out.println("Conexión exitosa");
         } catch (SQLException ex) {
-            System.out.println("Error en la conexión");
+            System.out.println("Excepicon en la conexión");
         } catch (ClassNotFoundException ex) {
             System.out.println("No se encuentra la clase");
         } catch (Exception ex){
@@ -37,7 +38,128 @@ public class ConexionBD {
         }
     }
     
+    public static void insertarVehiculo(Vehiculo vehiculo) { 
+        enlace();
+        
+        try {
+            String sql = "INSERT INTO vehiculo (MARCA, MODELO, MATRICULA) VALUES (?, ?, ?);";
+            stmt = conn.prepareStatement(sql);
+            
+            stmt.setString(1, vehiculo.getMarca());
+            stmt.setString(2, vehiculo.getModelo());
+            stmt.setString(3, vehiculo.getMatricula());
+            
+            System.out.println(stmt.toString());
+            
+            stmt.execute();
+        } catch (SQLIntegrityConstraintViolationException ex){
+            System.out.println("Error SQL: " + ex.toString());
+        } catch (SQLException ex) {
+            System.out.println("Error SQL: " + ex.toString());
+        }
+        
+        cerrarSesion();
+    }
     
+    public static void eliminarVehiculo(Vehiculo vehiculo) { 
+        enlace();
+        
+        try {
+            String sql = "DELETE FROM vehiculo WHERE MATRICULA = '?';";
+            stmt = conn.prepareStatement(sql);
+            
+            stmt.setString(1, vehiculo.getMatricula());
+            
+            System.out.println(stmt.toString());
+            
+            stmt.execute();
+        } catch (SQLException ex) {
+            System.out.println("Error SQL: " + ex.toString());
+        }
+        
+        cerrarSesion();
+    }
+    
+    public static List<Vehiculo> getVehiculos() { 
+        enlace();
+        
+        List<Vehiculo> listaVehiculos = null;
+        
+        try {
+            String sql = "SELECT * FROM vehiculo;";
+            stmt = conn.prepareStatement(sql);
+            
+            System.out.println(stmt.toString());
+            
+            rs = stmt.executeQuery();
+            
+            listaVehiculos = new ArrayList<Vehiculo>();
+            
+            while (rs.next()) {
+                listaVehiculos.add(new Vehiculo(rs.getString("MARCA"),
+                        rs.getString("MODELO"),
+                        rs.getString("MATRICULA")));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error SQL: " + ex.toString());
+        }
+        
+        cerrarSesion();
+        
+        return listaVehiculos;
+    }
+    
+    public static Vehiculo obtenerVehiculo(String matricula) {
+        enlace();
+        
+        Vehiculo vehiculo = null;
+        
+        try {
+            
+            String sql = "SELECT * FROM vehiculo WHERE matricula = ?;";
+            stmt = conn.prepareStatement(sql);
+            
+            stmt.setString(1, matricula);
+            
+            System.out.println(stmt.toString());
+            
+            rs = stmt.executeQuery();
+            
+            if(rs.next()){
+                vehiculo = new Vehiculo(rs.getString("Marca"), rs.getString("Modelo"), rs.getString("Matricula"));
+            } 
+        } catch (SQLException ex) {
+            System.out.println("Error SQL: " + ex.getMessage());
+        }
+        
+        cerrarSesion();
+        
+        return vehiculo;
+    }
+    
+    public static void editarVehiculo(Vehiculo vehiculo, String marca, String modelo, String matricula) { 
+        enlace();
+        
+        try {
+            String sql = "UPDATE vehiculo SET MARCA = '?', MODELO = '?', MATRICULA = '?' WHERE MATRICULA = '?';";
+            stmt = conn.prepareStatement(sql);
+            
+            stmt.setString(1, marca);
+            stmt.setString(2, modelo);
+            stmt.setString(3, matricula);
+            stmt.setString(4, vehiculo.getMatricula());
+            
+            System.out.println(stmt.toString());
+            
+            stmt.execute();
+        } catch (SQLIntegrityConstraintViolationException ex){
+            System.out.println("Error SQL: " + ex.toString());
+        } catch (SQLException ex) {
+            System.out.println("Error SQL: " + ex.toString());
+        }
+        
+        cerrarSesion();
+    }
     
     private static void cerrarSesion() {
         try {

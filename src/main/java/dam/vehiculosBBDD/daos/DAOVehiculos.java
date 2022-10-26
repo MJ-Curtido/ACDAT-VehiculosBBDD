@@ -4,9 +4,10 @@
  */
 package dam.vehiculosBBDD.daos;
 
+import dam.vehiculosBBDD.bbdd.ConexionBD;
 import dam.vehiculosBBDD.clases.Vehiculo;
 import dam.vehiculosBBDD.interfaces.IDAOVehiculos;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -20,17 +21,13 @@ public class DAOVehiculos implements IDAOVehiculos {
 
     private DAOVehiculos() {
         super();
-        this.falsaBD = new ArrayList<Vehiculo>();
-        falsaBD.add(new Vehiculo("Renault", "Zoe", "2345FDF"));
-        falsaBD.add(new Vehiculo("Renault", "Fluence", "0000FTL"));
-        falsaBD.add(new Vehiculo("Tesla", "3", "2422FHT"));
-        falsaBD.add(new Vehiculo("Tesla", "X", "1221FDF"));
-
+        this.falsaBD = ConexionBD.getVehiculos();
     }
 
     @Override
     public int insertarVehiculo(Vehiculo vehiculo) {
-        falsaBD.add(vehiculo);
+        ConexionBD.insertarVehiculo(vehiculo);
+        this.falsaBD = ConexionBD.getVehiculos();
 
         return 1;
     }
@@ -43,7 +40,9 @@ public class DAOVehiculos implements IDAOVehiculos {
 
     @Override
     public int eliminarVehiculos(List<Vehiculo> lstVehiculos) {
-        falsaBD.removeAll(lstVehiculos);
+        for (int i = 0; i < lstVehiculos.size(); i++) {
+            ConexionBD.eliminarVehiculo(lstVehiculos.get(i));
+        }
         
         return 0;
     }
@@ -70,7 +69,8 @@ public class DAOVehiculos implements IDAOVehiculos {
 
     @Override
     public int eliminarVehiculo(Vehiculo vehiculo) {
-        falsaBD.remove(vehiculo);
+        ConexionBD.eliminarVehiculo(vehiculo);
+        this.falsaBD = ConexionBD.getVehiculos();
         
         return 0;
     }
@@ -78,12 +78,15 @@ public class DAOVehiculos implements IDAOVehiculos {
     public Boolean existeVehiculo(String matricula) {
         Boolean existe = false;
         
-        for (int i = 0; i < falsaBD.size() && !existe; i++) {
-            if (falsaBD.get(i).getMatricula().equals(matricula)) {
-                existe = true;
-            }
+        if (ConexionBD.obtenerVehiculo(matricula) != null) {
+            existe = true;
         }
         
         return existe;
+    }
+    
+    public void editarVehiculo(Vehiculo vehiculoAEditar, String marca, String modelo, String matricula) {
+        ConexionBD.editarVehiculo(vehiculoAEditar, marca, modelo, matricula);
+        this.falsaBD = ConexionBD.getVehiculos();
     }
 }

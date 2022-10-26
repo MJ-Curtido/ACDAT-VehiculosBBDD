@@ -54,9 +54,8 @@ public class Gestion {
         Boolean editado = false;
         
         if (!DAOVehiculos.getInstance().existeVehiculo(matricula) || vehiculoAEditar.getMatricula().equals(matricula)) {
-            eliminarVehiculo(vehiculoAEditar.getMatricula());
+            DAOVehiculos.getInstance().editarVehiculo(vehiculoAEditar, marca, modelo, matricula);
             
-            anyadirVehiculo(marca, modelo, matricula);
             editado = true;
         }
         
