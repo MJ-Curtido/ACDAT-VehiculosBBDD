@@ -24,7 +24,6 @@ public class PanelCRUD extends javax.swing.JPanel {
     private Vehiculo vehiculoAEditar;
     /**
      * Creates new form PanelCRUD
-     * @param miVentana
      */
     public PanelCRUD(VentanaVehiculo miVentana) {
         initComponents();

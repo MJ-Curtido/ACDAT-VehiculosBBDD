@@ -30,7 +30,7 @@ public class ConexionBD {
             conn = DriverManager.getConnection(url, login, password);
             System.out.println("Conexión exitosa");
         } catch (SQLException ex) {
-            System.out.println("Excepicon en la conexión");
+            System.out.println("Excepción en la conexión");
         } catch (ClassNotFoundException ex) {
             System.out.println("No se encuentra la clase");
         } catch (Exception ex){
@@ -56,9 +56,9 @@ public class ConexionBD {
             System.out.println("Error SQL: " + ex.toString());
         } catch (SQLException ex) {
             System.out.println("Error SQL: " + ex.toString());
-        } finally {
-            cerrarSesion();
-        }        
+        }
+        
+        cerrarSesion();       
     }
     
     public static void eliminarVehiculo(Vehiculo vehiculo) { 
@@ -75,9 +75,9 @@ public class ConexionBD {
             stmt.execute();
         } catch (SQLException ex) {
             System.out.println("Error SQL por?: " + ex.toString());
-        } finally {
-            cerrarSesion();
         }
+        
+        cerrarSesion();
     }
     
     public static List<Vehiculo> getVehiculos() { 
@@ -102,9 +102,9 @@ public class ConexionBD {
             }
         } catch (SQLException ex) {
             System.out.println("Error SQL: " + ex.toString());
-        } finally {
-            cerrarSesion();
         }
+        
+        cerrarSesion();
         
         return listaVehiculos;
     }
@@ -130,9 +130,9 @@ public class ConexionBD {
             } 
         } catch (SQLException ex) {
             System.out.println("Error SQL: " + ex.getMessage());
-        } finally {
-            cerrarSesion();
         }
+        
+        cerrarSesion();
         
         return vehiculo;
     }
@@ -156,9 +156,9 @@ public class ConexionBD {
             System.out.println("Error SQL: " + ex.toString());
         } catch (SQLException ex) {
             System.out.println("Error SQL: " + ex.toString());
-        } finally {
-            cerrarSesion();
         }
+        
+        cerrarSesion();
     }
     
     private static void cerrarSesion() {
